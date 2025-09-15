@@ -34,7 +34,6 @@ docker push ${harborAddress}/${harborRepo}/${JOB_NAME}:${tag}'''
 transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'pipeline.yml')], 
 usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
             }
-            }
         }
         stage('远程执行k8s-master的kubectl命令') {
             steps {
