@@ -30,7 +30,10 @@ docker push ${harborAddress}/${harborRepo}/${JOB_NAME}:${tag}'''
         }
         stage('将yml文件传到k8s-master上') {
             steps {
-                echo 'success'
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'k8s', 
+transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'pipeline.yml')], 
+usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
             }
         }
         stage('远程执行k8s-master的kubectl命令') {
