@@ -18,12 +18,14 @@ pipeline {
         }
         stage('通过docker制作自定义镜像') {
             steps {
-                sh 'docker build -t ${JOB_NAME}:v1.0.2 .'
+                sh 'docker build -t ${JOB_NAME}:${tag} .'
             }
         }
         stage('将自定义镜像推送到Harbor') {
             steps {
-                echo 'success'
+                sh '''docker login -u ${harborUser} -p ${harborPasswd} ${harborAddress}
+docker tag ${JOB_NAME}:${tag} ${harborAddress}/${harborRepo}/${JOB_NAME}:${tag}
+docker push ${harborAddress}/${harborRepo}/${JOB_NAME}:${tag}'''
             }
         }
         stage('将yml文件传到k8s-master上') {
