@@ -37,7 +37,7 @@ usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }
         stage('远程执行k8s-master的kubectl命令') {
             steps {
-                echo 'success'
+                sh 'ssh root@192.168.157.143 kubectl apply -f /usr/local/k8s/pipeline.yml'
             }
         }
     }
