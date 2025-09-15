@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: test
+  name: vue-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vue-frontend
+  template:
+    metadata:
+      labels:
+        app: vue-frontend
+    spec:
+      imagePullSecrets:
+      - name: harbor-secret
+      containers:
+      - name: vue-frontend
+        image: 192.168.157.136:80/repo/vue:v1.0.4
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "900m"
+            memory: "1024Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: test
+  name: vue-frontend
+spec:
+  selector:
+    app: vue-frontend
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
