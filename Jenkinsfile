@@ -46,7 +46,33 @@ pipeline {
         }
         stage('推送') {
             steps {
-                 sshPublisher(publishers: [sshPublisherDesc(configName: 'test', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/usr/local/test', remoteDirectorySDF: false, removePrefix: 'dist', sourceFiles: 'dist/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                 sshPublisher(
+                               publishers: [
+                               sshPublisherDesc(
+                                configName: 'test',
+                                transfers: [
+                sshTransfer(
+                    cleanRemote: false,
+                    excludes: '',
+                    execCommand: '',
+                    execTimeout: 120000,
+                    flatten: false,
+                    makeEmptyDirs: false,
+                    noDefaultExcludes: false,
+                    patternSeparator: '[, ]+',
+                    remoteDirectory: '/usr/local/test',
+                    remoteDirectorySDF: false,
+                    removePrefix: 'dist',
+                    sourceFiles: 'dist/*'
+                )
+            ],
+            usePromotionTimestamp: false,
+            useWorkspaceInPromotion: false,
+            verbose: false
+        )
+    ]
+)
+
           }
       }
     }
