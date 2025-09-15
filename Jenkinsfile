@@ -16,17 +16,9 @@ pipeline {
                 checkout scmGit(branches: [[name: 'refs/tags/${tag}']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/blade1rose/studentmanager.git']])
             }
         }
-        stage('通过Node构建项目') {
-            steps {
-                sh '''node -v
-                npm install
-                npm -v
-                npm run build'''
-            }
-        }
         stage('通过docker制作自定义镜像') {
             steps {
-                echo 'success'
+                sh 'docker build -t ${JOB_NAME}:v1.0.2 .'
             }
         }
         stage('将自定义镜像推送到Harbor') {
