@@ -40,25 +40,28 @@ usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
                 echo 'success'
             }
         }
-        stage('推送') {
+        stage('远程执行k8s-master的kubectl命令') {
             steps {
-                sshPublisher(
-            publishers: [
-                sshPublisherDesc(configName: 'test',transfers: [sshTransfer(
-                            cleanRemote: false,
-                            flatten: true,
-                            remoteDirectory: '/usr/local/test',
-                            removePrefix: 'dist',
-                            sourceFiles: 'dist/*'
-                        )
-                    ],
-                            usePromotionTimestamp: false,
-                            useWorkspaceInPromotion: false,
-                            verbose: false
-                )
-                       ]
-                          )
-                  }
-      }
+                sh 'ssh root@192.168.157.143 kubectl apply -f /usr/local/k8s/pipeline.yml'
+            }
+        }
+    }
+    post {
+        success {
+            dingtalk (
+                robot: 'Jenkins-DingDing',
+                type: 'MARKDOWN',
+                title: "success: ${JOB_NAME}",
+                text: ["- 构建成功: ${JOB_NAME}! \n- 版本: ${tag} \n- 持续时间: ${currentBuild.durationString}"]
+            )
+        }
+        failure {
+            dingtalk (
+                robot: 'Jenkins-DingDing',
+                type: 'MARKDOWN',
+                title: "success: ${JOB_NAME}",
+                text: ["- 构建失败: ${JOB_NAME}! \n- 版本: ${tag} \n- 持续时间: ${currentBuild.durationString}"]
+            )
+        }
     }
 }
