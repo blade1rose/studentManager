@@ -17,7 +17,7 @@ spec:
       - name: harbor-secret
       containers:
       - name: vue-frontend
-        image: 192.168.157.136:80/repo/vue:v2.0.1
+        image: 192.168.157.136:80/repo/vue:v2.0.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
