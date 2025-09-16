@@ -105,7 +105,7 @@ const filteredScores = ref([]);
 const fetchScores = async () => {
   try {
     loading.value = true;
-    const response = await axios.get('http://localhost:8080/api/auth/score');
+    const response = await axios.get('/api/auth/score');
     scores.value = response.data;
     filteredScores.value = [...scores.value];
     ElMessage.success('成绩数据加载成功');
